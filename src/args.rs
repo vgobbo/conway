@@ -43,6 +43,7 @@ pub enum Presets {
 	Acorn,
 	Diehard,
 	Gosper,
+	PentaDecathlon,
 	StillBlock,
 }
 
@@ -52,6 +53,7 @@ impl Display for Presets {
 			Presets::Acorn => write!(f, "acorn"),
 			Presets::Diehard => write!(f, "diehard"),
 			Presets::Gosper => write!(f, "gosper"),
+			Presets::PentaDecathlon => write!(f, "penta-decathlon"),
 			Presets::StillBlock => write!(f, "still-block"),
 		}
 	}
@@ -65,6 +67,7 @@ impl FromStr for Presets {
 			"acorn" => Ok(Presets::Acorn),
 			"diehard" => Ok(Presets::Diehard),
 			"gosper" => Ok(Presets::Gosper),
+			"penta-decathlon" => Ok(Presets::PentaDecathlon),
 			"still-block" => Ok(Presets::StillBlock),
 			_ => Err(format!("Unknown preset: {s}.")),
 		}

@@ -200,6 +200,28 @@ impl Generator for AcornPatternGenerator {
 	}
 }
 
+pub struct PentaDecathlonPatternGenerator;
+
+impl Default for PentaDecathlonPatternGenerator {
+	fn default() -> Self {
+		PentaDecathlonPatternGenerator {}
+	}
+}
+
+impl Generator for PentaDecathlonPatternGenerator {
+	fn generate(&self) -> Vec<Vec<AutomataCell>> {
+		grids::to_vec(grids::PENTA_DECATHLON_GRID)
+	}
+
+	fn height(&self) -> usize {
+		grids::PENTA_DECATHLON_MIN_HEIGHT
+	}
+
+	fn width(&self) -> usize {
+		grids::PENTA_DECATHLON_MIN_WIDTH
+	}
+}
+
 #[rustfmt::skip]
 pub mod grids {
     use crate::automata::AutomataCell;
@@ -248,6 +270,29 @@ pub mod grids {
 		[ 0, 0, 0, 0, 1, 0, 0, 0, 0, ],
 		[ 0, 1, 1, 0, 0, 1, 1, 1, 0, ],
 		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+	];
+
+	pub const PENTA_DECATHLON_MIN_WIDTH: usize = 11;
+	pub const PENTA_DECATHLON_MIN_HEIGHT: usize = 18;
+	pub const PENTA_DECATHLON_GRID: [[u8;PENTA_DECATHLON_MIN_WIDTH]; PENTA_DECATHLON_MIN_HEIGHT] = [
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
 	];
 
 	pub fn to_vec<G: AsRef<[R]>, R: AsRef<[u8]>>(grid: G) -> Vec<Vec<AutomataCell>> {

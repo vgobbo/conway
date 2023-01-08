@@ -5,7 +5,10 @@ use automata::AutomataCell;
 use board_renderer::BoardRenderer;
 use clap::Parser;
 use finite_board::FiniteBoard;
-use generators::{AcornPatternGenerator, DiehardPatternGenerator, GosperGliderGunGenerator, SeededRandomGenerator};
+use generators::{
+	AcornPatternGenerator, DiehardPatternGenerator, GosperGliderGunGenerator, PentaDecathlonPatternGenerator,
+	SeededRandomGenerator,
+};
 use simple_solver::SimpleSolver;
 use solver::{SimpleCellProcessor, Thresholds};
 
@@ -43,6 +46,7 @@ fn build_preset_generator(args: PresetArgs) -> Vec<Vec<AutomataCell>> {
 		Presets::Acorn => Box::new(AcornPatternGenerator::default()),
 		Presets::Diehard => Box::new(DiehardPatternGenerator::default()),
 		Presets::Gosper => Box::new(GosperGliderGunGenerator::new(args.width, args.height)),
+		Presets::PentaDecathlon => Box::new(PentaDecathlonPatternGenerator::default()),
 		Presets::StillBlock => Box::new(StillBlockGenerator::default()),
 	};
 
