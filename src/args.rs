@@ -40,6 +40,7 @@ pub struct PresetArgs {
 
 #[derive(Clone, Debug, ValueEnum, PartialEq)]
 pub enum Presets {
+	Acorn,
 	Diehard,
 	Gosper,
 	StillBlock,
@@ -48,6 +49,7 @@ pub enum Presets {
 impl Display for Presets {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
+			Presets::Acorn => write!(f, "acorn"),
 			Presets::Diehard => write!(f, "diehard"),
 			Presets::Gosper => write!(f, "gosper"),
 			Presets::StillBlock => write!(f, "still-block"),
@@ -60,6 +62,7 @@ impl FromStr for Presets {
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		match s {
+			"acorn" => Ok(Presets::Acorn),
 			"diehard" => Ok(Presets::Diehard),
 			"gosper" => Ok(Presets::Gosper),
 			"still-block" => Ok(Presets::StillBlock),

@@ -178,6 +178,28 @@ impl Generator for DiehardPatternGenerator {
 	}
 }
 
+pub struct AcornPatternGenerator;
+
+impl Default for AcornPatternGenerator {
+	fn default() -> Self {
+		AcornPatternGenerator {}
+	}
+}
+
+impl Generator for AcornPatternGenerator {
+	fn generate(&self) -> Vec<Vec<AutomataCell>> {
+		grids::to_vec(grids::ACORN_GRID)
+	}
+
+	fn height(&self) -> usize {
+		grids::ACORN_MIN_HEIGHT
+	}
+
+	fn width(&self) -> usize {
+		grids::ACORN_MIN_WIDTH
+	}
+}
+
 #[rustfmt::skip]
 pub mod grids {
     use crate::automata::AutomataCell;
@@ -216,6 +238,16 @@ pub mod grids {
 		[ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, ],
 		[ 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, ],
 		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+	];
+
+	pub const ACORN_MIN_WIDTH: usize = 9;
+	pub const ACORN_MIN_HEIGHT: usize = 5;
+	pub const ACORN_GRID: [[u8;ACORN_MIN_WIDTH]; ACORN_MIN_HEIGHT] = [
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 1, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 1, 0, 0, 0, 0, ],
+		[ 0, 1, 1, 0, 0, 1, 1, 1, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
 	];
 
 	pub fn to_vec<G: AsRef<[R]>, R: AsRef<[u8]>>(grid: G) -> Vec<Vec<AutomataCell>> {
