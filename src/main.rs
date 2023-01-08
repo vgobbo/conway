@@ -47,6 +47,9 @@ struct PresetArgs {
 
 #[derive(Parser)]
 struct Args {
+	#[arg(long, default_value_t = std::u64::MAX)]
+	pub max_iterations: u64,
+
 	#[command(subcommand)]
 	pub command: Commands,
 }
@@ -79,7 +82,8 @@ fn main() {
 
 	renderer.render();
 	println!();
-	loop {
+
+	for _ in 0..args.max_iterations {
 		if !solver.next() {
 			break;
 		}
