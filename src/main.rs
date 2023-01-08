@@ -1,6 +1,7 @@
 use board_renderer::BoardRenderer;
 use clap::{Parser, Subcommand};
 use finite_board::FiniteBoard;
+use generators::SeededRandomGenerator;
 use simple_solver::SimpleSolver;
 use solver::{SimpleCellProcessor, Thresholds};
 
@@ -33,6 +34,9 @@ struct RandomArgs {
 
 	#[arg(long)]
 	pub probability: f32,
+
+	#[arg(long)]
+	pub seed: Option<u64>,
 }
 
 #[derive(Parser, Clone)]
@@ -47,11 +51,24 @@ struct Args {
 	pub command: Commands,
 }
 
+fn build_random_generator(args: RandomArgs) -> Box<dyn Generator> {
+	if let Some(seed) = args.seed {
+		Box::new(SeededRandomGenerator::new(
+			args.width,
+			args.height,
+			seed,
+			args.probability,
+		))
+	} else {
+		Box::new(RandomGenerator::new(args.width, args.height, args.probability))
+	}
+}
+
 fn main() {
 	let args = Args::parse();
 
 	let generator: Box<dyn Generator> = match args.command {
-		Commands::Random(args) => Box::new(RandomGenerator::new(args.width, args.height, args.probability)),
+		Commands::Random(args) => build_random_generator(args),
 		Commands::Preset(_) => Box::new(StillBlockGenerator::default()),
 	};
 

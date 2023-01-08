@@ -44,8 +44,6 @@ where
 				.collect::<Vec<&str>>()
 				.join("");
 			lines.push(line);
-			// self.board.main_row(i).iter().map(|cell| if cell.is_alive() { self.alive_glyph } else { self.dead_glyph
-			// }).for_each(|cell| print!("{}", cell));
 		}
 
 		println!("{}\n", lines.join("\n"));
