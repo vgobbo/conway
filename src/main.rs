@@ -5,7 +5,7 @@ use automata::AutomataCell;
 use board_renderer::BoardRenderer;
 use clap::Parser;
 use finite_board::FiniteBoard;
-use generators::{GosperGliderGunGenerator, SeededRandomGenerator};
+use generators::{DiehardPatternGenerator, GosperGliderGunGenerator, SeededRandomGenerator};
 use simple_solver::SimpleSolver;
 use solver::{SimpleCellProcessor, Thresholds};
 
@@ -40,6 +40,7 @@ fn build_random_generator(args: RandomArgs) -> Vec<Vec<AutomataCell>> {
 
 fn build_preset_generator(args: PresetArgs) -> Vec<Vec<AutomataCell>> {
 	let generator: Box<dyn Generator> = match args.name {
+		Presets::Diehard => Box::new(DiehardPatternGenerator::default()),
 		Presets::Gosper => Box::new(GosperGliderGunGenerator::new(args.width, args.height)),
 		Presets::StillBlock => Box::new(StillBlockGenerator::default()),
 	};

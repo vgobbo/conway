@@ -156,6 +156,28 @@ impl Generator for GosperGliderGunGenerator {
 	}
 }
 
+pub struct DiehardPatternGenerator;
+
+impl Default for DiehardPatternGenerator {
+	fn default() -> Self {
+		DiehardPatternGenerator {}
+	}
+}
+
+impl Generator for DiehardPatternGenerator {
+	fn generate(&self) -> Vec<Vec<AutomataCell>> {
+		grids::to_vec(grids::DIEHARD_GRID)
+	}
+
+	fn height(&self) -> usize {
+		grids::DIEHARD_MIN_HEIGHT
+	}
+
+	fn width(&self) -> usize {
+		grids::DIEHARD_MIN_WIDTH
+	}
+}
+
 #[rustfmt::skip]
 pub mod grids {
     use crate::automata::AutomataCell;
@@ -184,6 +206,16 @@ pub mod grids {
 		[ 0, 1, 1, 0, ],
 		[ 0, 1, 1, 0, ],
 		[ 0, 0, 0, 0, ],
+	];
+
+	pub const DIEHARD_MIN_WIDTH: usize = 10;
+	pub const DIEHARD_MIN_HEIGHT: usize = 5;
+	pub const DIEHARD_GRID: [[u8;DIEHARD_MIN_WIDTH]; DIEHARD_MIN_HEIGHT] = [
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, ],
+		[ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
 	];
 
 	pub fn to_vec<G: AsRef<[R]>, R: AsRef<[u8]>>(grid: G) -> Vec<Vec<AutomataCell>> {
