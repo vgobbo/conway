@@ -1,5 +1,7 @@
+use std::{fmt::Display, str::FromStr};
+
 use board_renderer::BoardRenderer;
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 use finite_board::FiniteBoard;
 use generators::SeededRandomGenerator;
 use simple_solver::SimpleSolver;
@@ -45,6 +47,36 @@ struct PresetArgs {
 	pub name: String,
 }
 
+#[derive(Clone, Debug, ValueEnum, PartialEq)]
+enum RenderMode {
+	All,
+	Final,
+	None,
+}
+
+impl Display for RenderMode {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			RenderMode::All => write!(f, "all"),
+			RenderMode::Final => write!(f, "final"),
+			RenderMode::None => write!(f, "none"),
+		}
+	}
+}
+
+impl FromStr for RenderMode {
+	type Err = String;
+
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		match s {
+			"all" => Ok(RenderMode::All),
+			"final" => Ok(RenderMode::Final),
+			"none" => Ok(RenderMode::None),
+			_ => Err(format!("Unknown render mode: {s}.")),
+		}
+	}
+}
+
 #[derive(Parser)]
 struct Args {
 	#[arg(long, default_value_t = std::u64::MAX)]
@@ -55,6 +87,9 @@ struct Args {
 
 	#[arg(long, default_value = " ")]
 	pub dead_glyph: String,
+
+	#[arg(long, default_value_t = RenderMode::Final, value_parser = clap::builder::EnumValueParser::<RenderMode>::new())]
+	pub render_mode: RenderMode,
 
 	#[command(subcommand)]
 	pub command: Commands,
@@ -86,14 +121,23 @@ fn main() {
 	let processor = SimpleCellProcessor::new(Thresholds::default());
 	let solver = SimpleSolver::new(processor, &board);
 
-	renderer.render();
-	println!();
+	if args.render_mode != RenderMode::None {
+		renderer.render();
+		println!();
+	}
 
 	for _ in 0..args.max_iterations {
 		if !solver.next() {
 			break;
 		}
 		board.swap();
+		if args.render_mode == RenderMode::All {
+			renderer.render();
+			println!();
+		}
+	}
+
+	if args.render_mode == RenderMode::Final {
 		renderer.render();
 		println!();
 	}
