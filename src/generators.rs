@@ -157,7 +157,7 @@ impl Generator for GosperGliderGunGenerator {
 }
 
 #[rustfmt::skip]
-mod grids {
+pub mod grids {
     use crate::automata::AutomataCell;
 
 	pub const GOSPER_GLIDER_GUN_MIN_WIDTH: usize = 38;
@@ -191,5 +191,31 @@ mod grids {
 			.iter()
 			.map(|row| row.as_ref().iter().map(|cell| cell.clone().into()).collect())
 			.collect()
+	}
+
+	pub fn create(width: usize, height: usize) -> Vec<Vec<AutomataCell>> {
+		(0..height)
+			.map(|_| {
+				let mut row = Vec::with_capacity(0);
+				Vec::resize_with(&mut row, width, || AutomataCell::new(false));
+				row
+			})
+			.collect()
+	}
+
+	// There is a compiler bug that warns about unused_mut even though it is required.
+	#[allow(unused_mut)]
+	pub fn translate_into(di: i32, dj: i32, object: Vec<Vec<AutomataCell>>, grid: &mut Vec<Vec<AutomataCell>>) {
+		let obj_w = object.get(0).unwrap().len();
+		let obj_h = object.len();
+
+		for i in 0..obj_h {
+			let obj_row = object.get(i).unwrap();
+			let mut grid_row = grid.get_mut((i as i32 + di) as usize).unwrap();
+			for j in 0..obj_w {
+				let cell = grid_row.get_mut((j as i32 + dj) as usize).unwrap();
+				*cell = obj_row.get(j).unwrap().clone();
+			}
+		}
 	}
 }

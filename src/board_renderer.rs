@@ -46,6 +46,6 @@ where
 			lines.push(line);
 		}
 
-		println!("{}\n", lines.join("\n"));
+		println!("{}", lines.join("\n"));
 	}
 }

@@ -1,6 +1,7 @@
 use std::time::Duration;
 
 use args::{Args, Commands, PresetArgs, Presets, RandomArgs, RenderMode};
+use automata::AutomataCell;
 use board_renderer::BoardRenderer;
 use clap::Parser;
 use finite_board::FiniteBoard;
@@ -22,35 +23,46 @@ mod generators;
 mod simple_solver;
 mod solver;
 
-fn build_random_generator(args: RandomArgs) -> Box<dyn Generator> {
-	if let Some(seed) = args.seed {
-		Box::new(SeededRandomGenerator::new(
-			args.width,
-			args.height,
-			seed,
-			args.probability,
-		))
-	} else {
-		Box::new(RandomGenerator::new(args.width, args.height, args.probability))
-	}
+fn build_random_generator(args: RandomArgs) -> Vec<Vec<AutomataCell>> {
+	let generator: Box<dyn Generator> = match args.seed {
+		Some(seed) => {
+			Box::new(SeededRandomGenerator::new(
+				args.width,
+				args.height,
+				seed,
+				args.probability,
+			))
+		},
+		None => Box::new(RandomGenerator::new(args.width, args.height, args.probability)),
+	};
+	generator.generate()
 }
 
-fn build_preset_generator(args: PresetArgs) -> Box<dyn Generator> {
-	match args.name {
+fn build_preset_generator(args: PresetArgs) -> Vec<Vec<AutomataCell>> {
+	let generator: Box<dyn Generator> = match args.name {
 		Presets::Gosper => Box::new(GosperGliderGunGenerator::new(args.width, args.height)),
 		Presets::StillBlock => Box::new(StillBlockGenerator::default()),
-	}
+	};
+
+	let object = generator.generate();
+	let mut grid = generators::grids::create(
+		args.width.unwrap_or(generator.width()),
+		args.height.unwrap_or(generator.height()),
+	);
+	generators::grids::translate_into(0, 0, object, &mut grid);
+
+	grid
 }
 
 fn main() {
 	let args = Args::parse();
 
-	let generator: Box<dyn Generator> = match args.command {
+	let grid = match args.command {
 		Commands::Random(args) => build_random_generator(args),
 		Commands::Preset(args) => build_preset_generator(args),
 	};
 
-	let board = FiniteBoard::new(generator.generate());
+	let board = FiniteBoard::new(grid);
 	let renderer = BoardRenderer::new(args.alive_glyph.as_str(), args.dead_glyph.as_str(), &board);
 	let processor = SimpleCellProcessor::new(Thresholds::default());
 	let solver = SimpleSolver::new(processor, &board);
