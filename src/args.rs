@@ -31,6 +31,9 @@ pub struct PresetArgs {
 	#[arg(long)]
 	pub height: Option<usize>,
 
+	#[arg(long, default_value_t = false)]
+	pub center: bool,
+
 	#[arg(long)]
 	pub name: Presets,
 }

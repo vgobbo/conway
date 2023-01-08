@@ -244,9 +244,9 @@ pub mod grids {
 
 		for i in 0..obj_h {
 			let obj_row = object.get(i).unwrap();
-			let mut grid_row = grid.get_mut((i as i32 + di) as usize).unwrap();
+			let mut grid_row = grid.get_mut((i as i32 + di) as usize).expect(format!("({i}) row not found.").as_str());
 			for j in 0..obj_w {
-				let cell = grid_row.get_mut((j as i32 + dj) as usize).unwrap();
+				let cell = grid_row.get_mut((j as i32 + dj) as usize).expect(format!("({j}) column not found.").as_str());
 				*cell = obj_row.get(j).unwrap().clone();
 			}
 		}

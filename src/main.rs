@@ -46,11 +46,18 @@ fn build_preset_generator(args: PresetArgs) -> Vec<Vec<AutomataCell>> {
 	};
 
 	let object = generator.generate();
-	let mut grid = generators::grids::create(
-		args.width.unwrap_or(generator.width()),
-		args.height.unwrap_or(generator.height()),
-	);
-	generators::grids::translate_into(0, 0, object, &mut grid);
+
+	let grid_width = args.width.unwrap_or(generator.width());
+	let grid_height = args.height.unwrap_or(generator.height());
+	let mut grid = generators::grids::create(grid_width, grid_height);
+
+	if args.center {
+		let di = (grid_height - generator.height()) / 2;
+		let dj = (grid_width - generator.width()) / 2;
+		generators::grids::translate_into(di as i32, dj as i32, object, &mut grid);
+	} else {
+		generators::grids::translate_into(0, 0, object, &mut grid);
+	}
 
 	grid
 }
