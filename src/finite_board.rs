@@ -3,7 +3,6 @@ use std::cell::Cell;
 use crate::{
 	automata::AutomataCell,
 	board::{Board, IndexedRow},
-	generators::Generator,
 };
 
 pub struct FiniteBoard {
@@ -15,14 +14,15 @@ pub struct FiniteBoard {
 }
 
 impl FiniteBoard {
-	pub fn new(generator: Box<dyn Generator>) -> FiniteBoard {
-		let buffer = generator.generate();
-		let buffers = [buffer.clone(), buffer];
+	pub fn new(grid: Vec<Vec<AutomataCell>>) -> FiniteBoard {
+		let width = grid.get(0).unwrap().len();
+		let height = grid.len();
+		let grids = [grid.clone(), grid];
 
 		FiniteBoard {
-			width: generator.width(),
-			height: generator.height(),
-			buffers,
+			width,
+			height,
+			buffers: grids,
 			main_buffer: Cell::new(0),
 			back_buffer: Cell::new(1),
 		}

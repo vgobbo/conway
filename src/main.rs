@@ -50,7 +50,7 @@ fn main() {
 		Commands::Preset(args) => build_preset_generator(args),
 	};
 
-	let board = FiniteBoard::new(generator);
+	let board = FiniteBoard::new(generator.generate());
 	let renderer = BoardRenderer::new(args.alive_glyph.as_str(), args.dead_glyph.as_str(), &board);
 	let processor = SimpleCellProcessor::new(Thresholds::default());
 	let solver = SimpleSolver::new(processor, &board);
