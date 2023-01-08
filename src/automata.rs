@@ -30,3 +30,9 @@ impl From<bool> for AutomataCell {
 		AutomataCell::new(value)
 	}
 }
+
+impl From<u8> for AutomataCell {
+	fn from(value: u8) -> Self {
+		AutomataCell::new(value != 0)
+	}
+}

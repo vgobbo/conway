@@ -26,7 +26,40 @@ pub struct RandomArgs {
 #[derive(Parser, Clone)]
 pub struct PresetArgs {
 	#[arg(long)]
-	pub name: String,
+	pub width: Option<usize>,
+
+	#[arg(long)]
+	pub height: Option<usize>,
+
+	#[arg(long)]
+	pub name: Presets,
+}
+
+#[derive(Clone, Debug, ValueEnum, PartialEq)]
+pub enum Presets {
+	Gosper,
+	StillBlock,
+}
+
+impl Display for Presets {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Presets::Gosper => write!(f, "gosper"),
+			Presets::StillBlock => write!(f, "still-block"),
+		}
+	}
+}
+
+impl FromStr for Presets {
+	type Err = String;
+
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		match s {
+			"gosper" => Ok(Presets::Gosper),
+			"still-block" => Ok(Presets::StillBlock),
+			_ => Err(format!("Unknown preset: {s}.")),
+		}
+	}
 }
 
 #[derive(Clone, Debug, ValueEnum, PartialEq)]

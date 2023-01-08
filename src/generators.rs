@@ -120,3 +120,66 @@ impl Generator for StillBlockGenerator {
 		4
 	}
 }
+
+pub struct GosperGliderGunGenerator {
+	width: usize,
+	height: usize,
+}
+
+impl GosperGliderGunGenerator {
+	pub fn new(width: Option<usize>, height: Option<usize>) -> GosperGliderGunGenerator {
+		const MIN_WIDTH: usize = 38;
+		const MIN_HEIGHT: usize = 11;
+
+		let w = width.unwrap_or(MIN_WIDTH);
+		let h = height.unwrap_or(MIN_HEIGHT);
+		if w < MIN_WIDTH || h < MIN_HEIGHT {
+			panic!("Grid {w}x{h} is too small (min. {MIN_WIDTH}x{MIN_HEIGHT}).");
+		}
+
+		GosperGliderGunGenerator { width: w, height: h }
+	}
+}
+
+impl Default for GosperGliderGunGenerator {
+	fn default() -> Self {
+		GosperGliderGunGenerator::new(None, None)
+	}
+}
+
+impl Generator for GosperGliderGunGenerator {
+	fn generate(&self) -> Vec<Vec<AutomataCell>> {
+		grids::GOSPER_GLIDER_GUN_GRID
+			.iter()
+			.map(|row| row.iter().map(|cell| cell.clone().into()).collect())
+			.collect()
+	}
+
+	fn height(&self) -> usize {
+		self.height
+	}
+
+	fn width(&self) -> usize {
+		self.width
+	}
+}
+
+#[rustfmt::skip]
+mod grids {
+	pub const GOSPER_GLIDER_GUN_MIN_WIDTH: usize = 38;
+	pub const GOSPER_GLIDER_GUN_MIN_HEIGHT: usize = 11;
+
+	pub const GOSPER_GLIDER_GUN_GRID: [[u8;GOSPER_GLIDER_GUN_MIN_WIDTH]; GOSPER_GLIDER_GUN_MIN_HEIGHT] = [
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, ],
+		[ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
+	];
+}
