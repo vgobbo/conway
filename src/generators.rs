@@ -104,20 +104,15 @@ impl Default for StillBlockGenerator {
 
 impl Generator for StillBlockGenerator {
 	fn generate(&self) -> Vec<Vec<AutomataCell>> {
-		vec![
-			vec![false.into(), false.into(), false.into(), false.into()],
-			vec![false.into(), true.into(), true.into(), false.into()],
-			vec![false.into(), true.into(), true.into(), false.into()],
-			vec![false.into(), false.into(), false.into(), false.into()],
-		]
+		grids::to_vec(&grids::STILL_BLOCK_GRID)
 	}
 
 	fn height(&self) -> usize {
-		4
+		grids::STILL_BLOCK_MIN_HEIGHT
 	}
 
 	fn width(&self) -> usize {
-		4
+		grids::STILL_BLOCK_MIN_WIDTH
 	}
 }
 
@@ -149,10 +144,7 @@ impl Default for GosperGliderGunGenerator {
 
 impl Generator for GosperGliderGunGenerator {
 	fn generate(&self) -> Vec<Vec<AutomataCell>> {
-		grids::GOSPER_GLIDER_GUN_GRID
-			.iter()
-			.map(|row| row.iter().map(|cell| cell.clone().into()).collect())
-			.collect()
+		grids::to_vec(grids::GOSPER_GLIDER_GUN_GRID)
 	}
 
 	fn height(&self) -> usize {
@@ -166,9 +158,10 @@ impl Generator for GosperGliderGunGenerator {
 
 #[rustfmt::skip]
 mod grids {
+    use crate::automata::AutomataCell;
+
 	pub const GOSPER_GLIDER_GUN_MIN_WIDTH: usize = 38;
 	pub const GOSPER_GLIDER_GUN_MIN_HEIGHT: usize = 11;
-
 	pub const GOSPER_GLIDER_GUN_GRID: [[u8;GOSPER_GLIDER_GUN_MIN_WIDTH]; GOSPER_GLIDER_GUN_MIN_HEIGHT] = [
 		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
 		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
@@ -182,4 +175,21 @@ mod grids {
 		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
 		[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
 	];
+
+	pub const STILL_BLOCK_MIN_WIDTH: usize = 4;
+	pub const STILL_BLOCK_MIN_HEIGHT: usize = 4;
+	pub const STILL_BLOCK_GRID: [[u8;STILL_BLOCK_MIN_WIDTH]; STILL_BLOCK_MIN_HEIGHT] = [
+		[ 0, 0, 0, 0, ],
+		[ 0, 1, 1, 0, ],
+		[ 0, 1, 1, 0, ],
+		[ 0, 0, 0, 0, ],
+	];
+
+	pub fn to_vec<G: AsRef<[R]>, R: AsRef<[u8]>>(grid: G) -> Vec<Vec<AutomataCell>> {
+		let grid = grid.as_ref();
+		grid
+			.iter()
+			.map(|row| row.as_ref().iter().map(|cell| cell.clone().into()).collect())
+			.collect()
+	}
 }
