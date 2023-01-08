@@ -106,6 +106,9 @@ pub struct Args {
 	#[arg(long, default_value_t = RenderMode::Final, value_parser = clap::builder::EnumValueParser::<RenderMode>::new())]
 	pub render_mode: RenderMode,
 
+	#[arg(long)]
+	pub frame_delay: Option<u64>,
+
 	#[command(subcommand)]
 	pub command: Commands,
 }

@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use args::{Args, Commands, PresetArgs, Presets, RandomArgs, RenderMode};
 use board_renderer::BoardRenderer;
 use clap::Parser;
@@ -64,6 +66,9 @@ fn main() {
 		}
 		board.swap();
 		if args.render_mode == RenderMode::All {
+			if let Some(frame_delay) = &args.frame_delay {
+				std::thread::sleep(Duration::from_millis(frame_delay.clone()));
+			}
 			renderer.render();
 			println!();
 		}
