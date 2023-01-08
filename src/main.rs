@@ -50,6 +50,12 @@ struct Args {
 	#[arg(long, default_value_t = std::u64::MAX)]
 	pub max_iterations: u64,
 
+	#[arg(long, default_value = "O")]
+	pub alive_glyph: String,
+
+	#[arg(long, default_value = " ")]
+	pub dead_glyph: String,
+
 	#[command(subcommand)]
 	pub command: Commands,
 }
@@ -76,7 +82,7 @@ fn main() {
 	};
 
 	let board = FiniteBoard::new(generator);
-	let renderer = BoardRenderer::new("1", "0", &board);
+	let renderer = BoardRenderer::new(args.alive_glyph.as_str(), args.dead_glyph.as_str(), &board);
 	let processor = SimpleCellProcessor::new(Thresholds::default());
 	let solver = SimpleSolver::new(processor, &board);
 
