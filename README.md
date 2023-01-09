@@ -6,3 +6,7 @@ Simple and for fun implementation of [Conway's Game of Life](https://en.wikipedi
 - No loop detection.
 - Prints board to the console.
 - Configurable board size.
+
+## How To Use
+
+Just run `cargo run -- --help` and explore the options.
