@@ -94,17 +94,12 @@ impl Generator for SeededRandomGenerator {
 	}
 }
 
+#[derive(Default)]
 pub struct StillBlockGenerator {}
-
-impl Default for StillBlockGenerator {
-	fn default() -> Self {
-		StillBlockGenerator {}
-	}
-}
 
 impl Generator for StillBlockGenerator {
 	fn generate(&self) -> Vec<Vec<AutomataCell>> {
-		grids::to_vec(&grids::STILL_BLOCK_GRID)
+		grids::to_vec(grids::STILL_BLOCK_GRID)
 	}
 
 	fn height(&self) -> usize {
@@ -116,13 +111,8 @@ impl Generator for StillBlockGenerator {
 	}
 }
 
+#[derive(Default)]
 pub struct GosperGliderGunGenerator;
-
-impl Default for GosperGliderGunGenerator {
-	fn default() -> Self {
-		GosperGliderGunGenerator {}
-	}
-}
 
 impl Generator for GosperGliderGunGenerator {
 	fn generate(&self) -> Vec<Vec<AutomataCell>> {
@@ -138,13 +128,8 @@ impl Generator for GosperGliderGunGenerator {
 	}
 }
 
+#[derive(Default)]
 pub struct DiehardPatternGenerator;
-
-impl Default for DiehardPatternGenerator {
-	fn default() -> Self {
-		DiehardPatternGenerator {}
-	}
-}
 
 impl Generator for DiehardPatternGenerator {
 	fn generate(&self) -> Vec<Vec<AutomataCell>> {
@@ -160,13 +145,8 @@ impl Generator for DiehardPatternGenerator {
 	}
 }
 
+#[derive(Default)]
 pub struct AcornPatternGenerator;
-
-impl Default for AcornPatternGenerator {
-	fn default() -> Self {
-		AcornPatternGenerator {}
-	}
-}
 
 impl Generator for AcornPatternGenerator {
 	fn generate(&self) -> Vec<Vec<AutomataCell>> {
@@ -182,13 +162,8 @@ impl Generator for AcornPatternGenerator {
 	}
 }
 
+#[derive(Default)]
 pub struct PentaDecathlonPatternGenerator;
-
-impl Default for PentaDecathlonPatternGenerator {
-	fn default() -> Self {
-		PentaDecathlonPatternGenerator {}
-	}
-}
 
 impl Generator for PentaDecathlonPatternGenerator {
 	fn generate(&self) -> Vec<Vec<AutomataCell>> {
@@ -281,7 +256,7 @@ pub mod grids {
 		let grid = grid.as_ref();
 		grid
 			.iter()
-			.map(|row| row.as_ref().iter().map(|cell| cell.clone().into()).collect())
+			.map(|row| row.as_ref().iter().map(|cell| (*cell).into()).collect())
 			.collect()
 	}
 
@@ -303,9 +278,9 @@ pub mod grids {
 
 		for i in 0..obj_h {
 			let obj_row = object.get(i).unwrap();
-			let mut grid_row = grid.get_mut((i as i32 + di) as usize).expect(format!("({i}) row not found.").as_str());
+			let mut grid_row = grid.get_mut((i as i32 + di) as usize).unwrap_or_else(|| panic!("({i}) row not found."));
 			for j in 0..obj_w {
-				let cell = grid_row.get_mut((j as i32 + dj) as usize).expect(format!("({j}) column not found.").as_str());
+				let cell = grid_row.get_mut((j as i32 + dj) as usize).unwrap_or_else(|| panic!("({j}) column not found."));
 				*cell = obj_row.get(j).unwrap().clone();
 			}
 		}

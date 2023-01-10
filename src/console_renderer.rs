@@ -15,7 +15,7 @@ where
 {
 	pub fn new(alive_glyph: &'a str, dead_glyph: &'a str, board: &'a T) -> ConsoleRenderer<'a, T> {
 		ConsoleRenderer {
-			board: board,
+			board,
 			alive_glyph,
 			dead_glyph,
 		}

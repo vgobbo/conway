@@ -62,13 +62,13 @@ impl IndexedRow for FiniteBoard {
 	fn main_row(&self, i: usize) -> &Vec<AutomataCell> {
 		self.buffers[self.main_buffer.get()]
 			.get(i)
-			.expect(format!("({}) row not found.", i).as_str())
+			.unwrap_or_else(|| panic!("({}) row not found.", i))
 	}
 
 	fn back_row(&self, i: usize) -> &Vec<AutomataCell> {
 		self.buffers[self.back_buffer.get()]
 			.get(i)
-			.expect(format!("({}) row not found.", i).as_str())
+			.unwrap_or_else(|| panic!("({}) row not found.", i))
 	}
 }
 
@@ -81,7 +81,7 @@ impl Board for FiniteBoard {
 	fn is_alive(&self, i: usize, j: usize) -> bool {
 		self.main_row(i)
 			.get(j)
-			.expect(format!("({},{}) cell not found.", i, j).as_str())
+			.unwrap_or_else(|| panic!("({},{}) cell not found.", i, j))
 			.clone()
 			.is_alive()
 	}

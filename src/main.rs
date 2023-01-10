@@ -5,16 +5,13 @@ use automata::AutomataCell;
 use clap::Parser;
 use console_renderer::ConsoleRenderer;
 use finite_board::FiniteBoard;
-use generators::{
-	AcornPatternGenerator, DiehardPatternGenerator, GosperGliderGunGenerator, PentaDecathlonPatternGenerator,
-	SeededRandomGenerator,
-};
+use generators::SeededRandomGenerator;
 use simple_solver::SimpleSolver;
 use solver::{SimpleCellProcessor, Thresholds};
 
 use crate::{
 	board::Render,
-	generators::{Generator, RandomGenerator, StillBlockGenerator},
+	generators::{Generator, RandomGenerator},
 };
 
 mod args;
@@ -46,11 +43,11 @@ fn build_random_generator(args: RandomArgs) -> Vec<Vec<AutomataCell>> {
 
 fn build_preset_generator(args: PresetArgs) -> Vec<Vec<AutomataCell>> {
 	let generator: Box<dyn Generator> = match args.name {
-		Presets::Acorn => Box::new(AcornPatternGenerator::default()),
-		Presets::Diehard => Box::new(DiehardPatternGenerator::default()),
-		Presets::Gosper => Box::new(GosperGliderGunGenerator::default()),
-		Presets::PentaDecathlon => Box::new(PentaDecathlonPatternGenerator::default()),
-		Presets::StillBlock => Box::new(StillBlockGenerator::default()),
+		Presets::Acorn => Box::<generators::AcornPatternGenerator>::default(),
+		Presets::Diehard => Box::<generators::DiehardPatternGenerator>::default(),
+		Presets::Gosper => Box::<generators::GosperGliderGunGenerator>::default(),
+		Presets::PentaDecathlon => Box::<generators::PentaDecathlonPatternGenerator>::default(),
+		Presets::StillBlock => Box::<generators::StillBlockGenerator>::default(),
 	};
 
 	let object = generator.generate();
@@ -94,7 +91,7 @@ fn main() {
 		board.swap();
 		if args.render_mode == RenderMode::All {
 			if let Some(frame_delay) = &args.frame_delay {
-				std::thread::sleep(Duration::from_millis(frame_delay.clone()));
+				std::thread::sleep(Duration::from_millis(*frame_delay));
 			}
 			renderer.render();
 		}
