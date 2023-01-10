@@ -28,7 +28,7 @@ impl FiniteBoard {
 		}
 	}
 
-	fn neighbors_coords<'a>(&self, i: usize, j: usize) -> Vec<(usize, usize)> {
+	fn neighbors_coords(&self, i: usize, j: usize) -> Vec<(usize, usize)> {
 		let ii = i as i32;
 		let jj = j as i32;
 		[

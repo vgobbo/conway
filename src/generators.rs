@@ -272,7 +272,7 @@ pub mod grids {
 
 	// There is a compiler bug that warns about unused_mut even though it is required.
 	#[allow(unused_mut)]
-	pub fn translate_into(di: i32, dj: i32, object: Vec<Vec<AutomataCell>>, grid: &mut Vec<Vec<AutomataCell>>) {
+	pub fn translate_into(di: i32, dj: i32, object: Vec<Vec<AutomataCell>>, grid: &mut [Vec<AutomataCell>]) {
 		let obj_w = object.get(0).unwrap().len();
 		let obj_h = object.len();
 

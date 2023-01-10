@@ -37,6 +37,8 @@ impl SimpleCellProcessor {
 }
 
 impl CellProcessor for SimpleCellProcessor {
+	// Favour readability.
+	#[allow(clippy::if_same_then_else)]
 	fn process(&self, main_cell: &AutomataCell, back_cell: &AutomataCell, alive_neighbors: usize, _: usize) -> bool {
 		if main_cell.is_alive() {
 			if alive_neighbors > self.thresholds.overpopulation {

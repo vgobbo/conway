@@ -52,8 +52,8 @@ fn build_preset_generator(args: PresetArgs) -> Vec<Vec<AutomataCell>> {
 
 	let object = generator.generate();
 
-	let grid_width = args.width.unwrap_or(generator.width());
-	let grid_height = args.height.unwrap_or(generator.height());
+	let grid_width = args.width.unwrap_or_else(|| generator.width());
+	let grid_height = args.height.unwrap_or_else(|| generator.height());
 	let mut grid = generators::grids::create(grid_width, grid_height);
 
 	if args.center {
