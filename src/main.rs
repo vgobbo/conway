@@ -45,7 +45,7 @@ fn build_preset_generator(args: PresetArgs) -> Vec<Vec<AutomataCell>> {
 	let generator: Box<dyn Generator> = match args.name {
 		Presets::Acorn => Box::new(AcornPatternGenerator::default()),
 		Presets::Diehard => Box::new(DiehardPatternGenerator::default()),
-		Presets::Gosper => Box::new(GosperGliderGunGenerator::new(args.width, args.height)),
+		Presets::Gosper => Box::new(GosperGliderGunGenerator::default()),
 		Presets::PentaDecathlon => Box::new(PentaDecathlonPatternGenerator::default()),
 		Presets::StillBlock => Box::new(StillBlockGenerator::default()),
 	};
