@@ -2,8 +2,8 @@ use std::time::Duration;
 
 use args::{Args, Commands, PresetArgs, Presets, RandomArgs, RenderMode};
 use automata::AutomataCell;
-use board_renderer::BoardRenderer;
 use clap::Parser;
+use console_renderer::ConsoleRenderer;
 use finite_board::FiniteBoard;
 use generators::{
 	AcornPatternGenerator, DiehardPatternGenerator, GosperGliderGunGenerator, PentaDecathlonPatternGenerator,
@@ -20,23 +20,26 @@ use crate::{
 mod args;
 mod automata;
 mod board;
-mod board_renderer;
+mod console_renderer;
 mod finite_board;
 mod generators;
 mod simple_solver;
 mod solver;
 
 fn build_random_generator(args: RandomArgs) -> Vec<Vec<AutomataCell>> {
+	let (tw, th) = termion::terminal_size().expect("Failed to detect terminal size.");
+	let width = match args.width {
+		Some(w) => w,
+		None => tw as usize,
+	};
+	let height = match args.height {
+		Some(h) => h,
+		None => th as usize - 1,
+	};
+
 	let generator: Box<dyn Generator> = match args.seed {
-		Some(seed) => {
-			Box::new(SeededRandomGenerator::new(
-				args.width,
-				args.height,
-				seed,
-				args.probability,
-			))
-		},
-		None => Box::new(RandomGenerator::new(args.width, args.height, args.probability)),
+		Some(seed) => Box::new(SeededRandomGenerator::new(width, height, seed, args.probability)),
+		None => Box::new(RandomGenerator::new(width, height, args.probability)),
 	};
 	generator.generate()
 }
@@ -76,13 +79,12 @@ fn main() {
 	};
 
 	let board = FiniteBoard::new(grid);
-	let renderer = BoardRenderer::new(args.alive_glyph.as_str(), args.dead_glyph.as_str(), &board);
+	let renderer = ConsoleRenderer::new(args.alive_glyph.as_str(), args.dead_glyph.as_str(), &board);
 	let processor = SimpleCellProcessor::new(Thresholds::default());
 	let solver = SimpleSolver::new(processor, &board);
 
 	if args.render_mode != RenderMode::None {
 		renderer.render();
-		println!();
 	}
 
 	for _ in 0..args.max_iterations {
@@ -95,7 +97,6 @@ fn main() {
 				std::thread::sleep(Duration::from_millis(frame_delay.clone()));
 			}
 			renderer.render();
-			println!();
 		}
 	}
 

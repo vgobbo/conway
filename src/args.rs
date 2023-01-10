@@ -11,10 +11,10 @@ pub enum Commands {
 #[derive(Parser, Clone)]
 pub struct RandomArgs {
 	#[arg(long)]
-	pub width: usize,
+	pub width: Option<usize>,
 
 	#[arg(long)]
-	pub height: usize,
+	pub height: Option<usize>,
 
 	#[arg(long)]
 	pub probability: f32,

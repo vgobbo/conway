@@ -1,6 +1,6 @@
 use crate::board::{IndexedRow, Render};
 
-pub struct BoardRenderer<'a, T>
+pub struct ConsoleRenderer<'a, T>
 where
 	T: IndexedRow,
 {
@@ -9,12 +9,12 @@ where
 	dead_glyph: &'a str,
 }
 
-impl<'a, T> BoardRenderer<'a, T>
+impl<'a, T> ConsoleRenderer<'a, T>
 where
 	T: IndexedRow,
 {
-	pub fn new(alive_glyph: &'a str, dead_glyph: &'a str, board: &'a T) -> BoardRenderer<'a, T> {
-		BoardRenderer {
+	pub fn new(alive_glyph: &'a str, dead_glyph: &'a str, board: &'a T) -> ConsoleRenderer<'a, T> {
+		ConsoleRenderer {
 			board: board,
 			alive_glyph,
 			dead_glyph,
@@ -22,7 +22,7 @@ where
 	}
 }
 
-impl<'a, T> Render for BoardRenderer<'a, T>
+impl<'a, T> Render for ConsoleRenderer<'a, T>
 where
 	T: IndexedRow,
 {
@@ -46,6 +46,7 @@ where
 			lines.push(line);
 		}
 
+		println!("{}", termion::cursor::Goto(1, 1));
 		println!("{}", lines.join("\n"));
 	}
 }

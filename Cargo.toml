@@ -9,6 +9,7 @@ clap = { version = "4.0", features = [ "derive" ] }
 num_cpus = { version = "1.13" }
 rand = { version = "0.8" }
 rand_chacha = { version = "0.3" }
+termion = { version = "2.0" }
 
 [profile.release]
 lto = true
