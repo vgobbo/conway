@@ -38,7 +38,7 @@ pub struct PresetArgs {
 	pub name: Presets,
 }
 
-#[derive(Clone, Debug, ValueEnum, PartialEq)]
+#[derive(Clone, Debug, ValueEnum, PartialEq, Eq)]
 pub enum Presets {
 	Acorn,
 	Diehard,
@@ -74,7 +74,7 @@ impl FromStr for Presets {
 	}
 }
 
-#[derive(Clone, Debug, ValueEnum, PartialEq)]
+#[derive(Clone, Debug, ValueEnum, PartialEq, Eq)]
 pub enum RenderMode {
 	All,
 	Final,
