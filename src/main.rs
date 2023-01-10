@@ -31,7 +31,7 @@ fn build_random_generator(args: RandomArgs) -> Vec<Vec<AutomataCell>> {
 	};
 	let height = match args.height {
 		Some(h) => h,
-		None => th as usize - 1,
+		None => th as usize - 2, // lose a couple lines to prevent flikering.
 	};
 
 	let generator: Box<dyn Generator> = match args.seed {
