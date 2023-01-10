@@ -10,3 +10,13 @@ Simple and for fun implementation of [Conway's Game of Life](https://en.wikipedi
 ## How To Use
 
 Just run `cargo run -- --help` and explore the options.
+
+## Improvements
+
+- Bitwise board.
+- Cell heatmap.
+- Make multi-threaded.
+- OpenGL renderer.
+- Shader solver.
+- Loop detection.
+- Output to image.
